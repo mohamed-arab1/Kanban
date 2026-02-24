@@ -1,66 +1,84 @@
-import Image from "next/image";
-import styles from "./page.module.css";
+"use client";
 
-export default function Home() {
+import { useState, useCallback } from "react";
+import { Box, Typography, AppBar, Toolbar, Container } from "@mui/material";
+import GridViewRoundedIcon from "@mui/icons-material/GridViewRounded";
+import KanbanBoard from "@/components/KanbanBoard";
+import SearchBar from "@/components/SearchBar";
+
+export default function HomePage() {
+  const [search, setSearch] = useState("");
+
+  const handleSearch = useCallback((value: string) => {
+    setSearch(value);
+  }, []);
+
   return (
-    <div className={styles.page}>
-      <main className={styles.main}>
-        <Image
-          className={styles.logo}
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className={styles.intro}>
-          <h1>To get started, edit the page.tsx file.</h1>
-          <p>
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              target="_blank"
-              rel="noopener noreferrer"
+    <Box
+      sx={{
+        minHeight: "100vh",
+        backgroundColor: "background.default",
+        display: "flex",
+        flexDirection: "column",
+      }}
+    >
+      {/* Top AppBar */}
+      <AppBar
+        position="sticky"
+        elevation={0}
+        sx={{
+          backgroundColor: "background.paper",
+          borderBottom: "1px solid",
+          borderColor: "divider",
+          color: "text.primary",
+        }}
+      >
+        <Toolbar sx={{ gap: 2, minHeight: { xs: 56, sm: 64 } }}>
+          {/* Logo */}
+          <Box sx={{ display: "flex", alignItems: "center", gap: 1.5 }}>
+            <Box
+              sx={{
+                width: 34,
+                height: 34,
+                borderRadius: 2,
+                background: "linear-gradient(135deg, #7C3AED 0%, #A78BFA 100%)",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                flexShrink: 0,
+              }}
             >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              Learning
-            </a>{" "}
-            center.
-          </p>
-        </div>
-        <div className={styles.ctas}>
-          <a
-            className={styles.primary}
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className={styles.logo}
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
-            />
-            Deploy Now
-          </a>
-          <a
-            className={styles.secondary}
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
-        </div>
-      </main>
-    </div>
+              <GridViewRoundedIcon sx={{ color: "#fff", fontSize: 18 }} />
+            </Box>
+            <Box>
+              <Typography variant="subtitle1" fontWeight={800} lineHeight={1} fontSize="0.9rem">
+                KANBAN BOARD
+              </Typography>
+              <Typography variant="caption" color="text.secondary" lineHeight={1}>
+                Task Management
+              </Typography>
+            </Box>
+          </Box>
+
+          <Box sx={{ flex: 1 }} />
+
+          {/* Search */}
+          <SearchBar onSearch={handleSearch} />
+        </Toolbar>
+      </AppBar>
+
+      {/* Main board area */}
+      <Container
+        maxWidth={false}
+        sx={{
+          flex: 1,
+          px: { xs: 2, sm: 3, md: 4 },
+          py: 3,
+          overflow: "hidden",
+        }}
+      >
+        <KanbanBoard search={search} />
+      </Container>
+    </Box>
   );
 }
