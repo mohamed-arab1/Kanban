@@ -17,7 +17,7 @@ export async function getTasks(params: GetTasksParams = {}): Promise<Task[]> {
         queryParams.column = column;
     }
 
-    const response = await apiClient.get<Task[]>("/tasks", {
+    const response = await apiClient.get<Task[]>("/api/tasks", {
         params: queryParams,
     });
 
@@ -30,12 +30,12 @@ export async function getTasksCount(column?: string, search?: string): Promise<n
     if (column) queryParams.column = column;
     if (search?.trim()) queryParams.q = search.trim();
 
-    const response = await apiClient.get<Task[]>("/tasks", { params: queryParams });
+    const response = await apiClient.get<Task[]>("/api/tasks", { params: queryParams });
     return response.data.length;
 }
 
 export async function createTask(data: CreateTaskDto): Promise<Task> {
-    const response = await apiClient.post<Task>("/tasks", {
+    const response = await apiClient.post<Task>("/api/tasks", {
         ...data,
         createdAt: new Date().toISOString(),
         order: Date.now(),
@@ -44,10 +44,10 @@ export async function createTask(data: CreateTaskDto): Promise<Task> {
 }
 
 export async function updateTask(id: string, data: UpdateTaskDto): Promise<Task> {
-    const response = await apiClient.patch<Task>(`/tasks/${id}`, data);
+    const response = await apiClient.patch<Task>(`/api/tasks/${id}`, data);
     return response.data;
 }
 
 export async function deleteTask(id: string): Promise<void> {
-    await apiClient.delete(`/tasks/${id}`);
+    await apiClient.delete(`/api/tasks/${id}`);
 }

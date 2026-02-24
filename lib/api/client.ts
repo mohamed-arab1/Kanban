@@ -1,7 +1,8 @@
 import axios from "axios";
 
 const apiClient = axios.create({
-    // Use relative path so it automatically uses current domain including Vercel
+    // Locally: NEXT_PUBLIC_API_URL=http://localhost:4000 (json-server)
+    // Vercel: empty string → relative URL → hits Next.js API routes
     baseURL: process.env.NEXT_PUBLIC_API_URL || "",
     headers: {
         "Content-Type": "application/json",
