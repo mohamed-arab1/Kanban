@@ -1,7 +1,8 @@
 import axios from "axios";
 
 const apiClient = axios.create({
-    baseURL: process.env.NEXT_PUBLIC_API_URL || "http://localhost:4000",
+    // Use relative path so it automatically uses current domain including Vercel
+    baseURL: process.env.NEXT_PUBLIC_API_URL || "",
     headers: {
         "Content-Type": "application/json",
     },
