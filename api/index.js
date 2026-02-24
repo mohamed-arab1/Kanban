@@ -1,19 +1,12 @@
 const jsonServer = require("json-server");
-const path = require("path");
-const fs = require("fs");
+const db = require("../db.json");
 
 const server = jsonServer.create();
 
-// Vercel serverless functions are read-only except for the /tmp directory.
-// We need to copy the db.json file to /tmp before using it.
-const dbPath = path.join(process.cwd(), "db.json");
-const tmpDbPath = path.join("/tmp", "db.json");
-
-if (!fs.existsSync(tmpDbPath)) {
-    fs.copyFileSync(dbPath, tmpDbPath);
-}
-
-const router = jsonServer.router(tmpDbPath);
+// Pass the JS object directly instead of a file path.
+// This forces json-server to run in memory, eliminating ALL Vercel 
+// read-only file system (EROFS) and writing errors.
+const router = jsonServer.router(db);
 const middlewares = jsonServer.defaults();
 
 server.use(middlewares);
